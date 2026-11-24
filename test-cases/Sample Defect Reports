@@ -1,0 +1,43 @@
+Sample Defect Reports
+
+BUG-001: Previously Mastered Topic Marked Unmastered After Single Low Homework Score
+Severity: High | Priority: High
+Module: Mastery & Progress Tracking
+Environment: Web App (Chrome / Windows 11)
+
+Description:
+When a student retakes a quiz or homework on an already mastered topic and scores lower than the mastery threshold, the system overwrites the existing mastery status instead of preserving best score and historical mastery.
+
+Steps to Reproduce:
+1. Log in with a student account that has Mastered status (Best Score: 90%) on Linear Equations.
+2. Start a follow-up practice/homework attempt for Linear Equations.
+3. Submit the attempt with a score of 40%.
+4. Navigate to the Topic Progress dashboard.
+
+Expected Result:
+- Historical mastery and Best Score (90%) remain preserved.
+- Latest Score (40%) is recorded separately without deleting previous attempt records.
+
+Actual Result:
+- Topic status changes from Mastered to Weak, and the previous 90% mastery record is overwritten.
+
+---
+
+BUG-002: Missing Rate Limiting on Authentication / API Endpoint Allows Repeated Automated Requests
+Severity: High | Priority: Medium
+Module: Authentication & API Security
+Environment: REST API (Tested via Postman)
+
+Description:
+Submitting repeated invalid requests to the login/verification endpoint does not trigger throttling or rate-limiting controls, allowing unrestricted automated attempts.
+
+Steps to Reproduce:
+1. Open Postman and configure a POST request to /api/auth/login with an invalid password payload.
+2. Run 50 consecutive requests within 10 seconds using Postman Collection Runner.
+3. Inspect HTTP status codes and response headers.
+
+Expected Result:
+- After a defined threshold of failed attempts, the API should return 429 Too Many Requests with a Retry-After header.
+
+Actual Result:
+- All 50 requests return 401 Unauthorized with no rate-limit headers or throttling enforced.
